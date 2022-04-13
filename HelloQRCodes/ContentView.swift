@@ -8,9 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var viewModel = ScannerViewModel()
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        VStack{
+            Text("QRコードリーダー")
+                .padding()
+            
+            // 読み取ったQRコード表示位置
+            Text("URL = [ " + viewModel.lastQrCode + " ]")
+            
+            Button(action: {
+                viewModel.torchIsOn = true
+            }){
+                Text("カメラ起動")
+                Image(systemName: "camera")
+            }
+            .fullScreenCover(isPresented: $viewModel.torchIsOn) {
+                SecondView(viewModel: viewModel)
+            }
+        }
     }
 }
 
